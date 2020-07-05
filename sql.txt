@@ -1,0 +1,12 @@
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `userName` varchar(45) NOT NULL COMMENT '用户名',
+  `password` varchar(45) NOT NULL COMMENT '密码',
+  `phone` varchar(45) DEFAULT NULL COMMENT '手机号',
+  `email` varchar(45) DEFAULT NULL COMMENT '邮箱',
+  `status` int(11) DEFAULT NULL COMMENT '用户状态，0为正常，1为封禁，2为删除',
+  `idCard` int(11) DEFAULT NULL COMMENT '身份证号',
+  `role` int(11) DEFAULT NULL COMMENT '用户权限，0为管普通用户，1为管理员，2为超级管理员',
+  `name` varchar(45) DEFAULT NULL COMMENT '用户实名',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8
