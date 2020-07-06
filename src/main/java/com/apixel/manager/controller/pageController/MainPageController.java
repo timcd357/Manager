@@ -5,6 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class MainPageController {
+    @RequestMapping("/")
+    public String root(){
+        return "redirect:/index";
+    }
     @RequestMapping("/index")
     public String toIndex(){
         return "index";

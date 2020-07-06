@@ -16,7 +16,7 @@
 <body>
 <div class="container">
     <div th:replace="~{user/sidebar :: headerBar}"></div>
-    <form th:action="@{/manager/user/login}" method="post">
+    <form th:action="@{/manager/user/login}" method="post" id="loginForm">
         <div class="form-group">
             <label for="userName">用户名</label>
             <input type="text" class="form-control" id="userName" placeholder="用户名" name="userName">
@@ -25,19 +25,20 @@
             <label for="password">密码</label>
             <input type="password" class="form-control" id="password" placeholder="密码" name="password">
         </div>
+        <span type="hide" id="loginMsg" style="color: red"></span>
         <div class="checkbox">
             <label>
                 <input type="checkbox"> 记住我
             </label>
         </div>
-        <button type="submit" class="btn btn-primary" id="login">登录</button>
+        <button type="button" class="btn btn-primary" id="login" onclick="loginByAjax()">登录</button>
     </form>
 </div>
 
 <div th:replace="~{templates/commonJs :: commonJs}"></div>
 
-<script>
-
-</script>
+<div>
+    <script type="text/javascript" th:src="@{/js/registAndLogin.js}"></script>
+</div>
 </body>
 </html>

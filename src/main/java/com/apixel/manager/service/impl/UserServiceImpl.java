@@ -6,6 +6,7 @@ import com.apixel.manager.dao.UserMapper;
 import com.apixel.manager.service.IUserService;
 import com.apixel.manager.utils.CodeMsg;
 import com.apixel.manager.utils.CookieUtils;
+import com.apixel.manager.utils.Message;
 import com.apixel.manager.utils.RedisUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,22 +47,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public String login(HttpServletResponse response, String userName, String password) {
+    public Message login(HttpServletResponse response, String userName, String password) {
         Map<String,Object> map = new HashMap<>();
         map.put("userName",userName);
         //判断用户名是否存在
         List<User> uList = userMapper.selectByMap(map);
         if (uList == null||uList.size()==0) {
-            throw new GlobalException(CodeMsg.USERNAME_NOT_EXIST);
+            throw new GlobalException(CodeMsg.LOGIN_ERROR);
         }
         //验证密码，这里为了例子简单，密码没有加密
         String dbPass = uList.get(0).getPassword();
         if (!password.equals(dbPass)) {
-            throw new GlobalException(CodeMsg.PASSWORD_ERROR);
+            throw new GlobalException(CodeMsg.LOGIN_ERROR);
         }
         //生成cookie
         String token = UUID.randomUUID().toString().replace("-", "");
         CookieUtils.addLoginCookie(response, token, uList.get(0));
-        return token;
+        return Message.success(token);
+    }
+
+    @Override
+    public List<User> selectUserByMap(Map map) {
+        return userMapper.selectByMap(map);
     }
 }

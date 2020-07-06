@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/css.css}">
-    <script type="text/javascript" th:src="@{/js/regist.js}"></script>
     <style type="text/css">
         body{
             margin-top: 100px;
@@ -16,22 +15,23 @@
 <body>
 <div class="container center-block">
     <div th:replace="~{user/sidebar :: headerBar}"></div>
-    <form th:action="@{/manager/user/addUser}" method="post">
+    <form action="#" th:method="post" id="registForm" role="form">
         <div class="form-group">
             <label for="userName">用户名</label>
-            <input type="text" class="form-control" id="userName" placeholder="用户名" name="userName" checked>
+            <input type="text" class="form-control" id="userName" placeholder="用户名" name="userName" onblur="isDupUserName()" required>
         </div>
+        <span id="userNameTip" style="color: red"></span>
         <div class="form-group">
             <label for="email">邮箱</label>
             <input type="email" class="form-control" id="email" placeholder="邮箱" name="email">
         </div>
         <div class="form-group">
             <label for="InputPassword">密码</label>
-            <input type="password" class="form-control" id="InputPassword" placeholder="密码" name="password" checked>
+            <input type="password" class="form-control" id="InputPassword" placeholder="密码" name="password" required>
         </div>
         <div class="form-group">
             <label for="reInputPassword">重复密码</label>
-            <input type="password" class="form-control" id="reInputPassword" placeholder="重复密码">
+            <input type="password" class="form-control" id="reInputPassword" placeholder="重复密码" required>
         </div>
         <div class="form-group">
             <label for="phone">电话</label>
@@ -40,12 +40,15 @@
 
         <input type="hidden" value="0" name="role">
         <input type="hidden" value="0" name="status">
-        <button type="submit" class="btn btn-primary" style="text-align: center">注册</button>
+        <span id="registMsg" style="color: red"></span>
+        <button type="button" class="btn btn-primary" style="text-align: center" onclick="registerByAjax()">注册</button>
     </form>
 </div>
 
 <div th:replace="~{templates/commonJs :: commonJs}"></div>
-
+<div>
+    <script type="text/javascript" th:src="@{/js/registAndLogin.js}"></script>
+</div>
 <script>
 
 </script>

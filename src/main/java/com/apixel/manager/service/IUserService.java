@@ -1,10 +1,12 @@
 package com.apixel.manager.service;
 
 import com.apixel.manager.pojo.User;
+import com.apixel.manager.utils.Message;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -17,5 +19,6 @@ import java.util.List;
 public interface IUserService extends IService<User> {
     void insertUser(User user);
     List<User> selectUser();
-    String login(HttpServletResponse response,String userName,String password);
+    Message login(HttpServletResponse response, String userName, String password);
+    List<User> selectUserByMap(Map map);
 }
