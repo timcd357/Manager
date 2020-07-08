@@ -4,10 +4,7 @@ import com.apixel.manager.exception.GlobalException;
 import com.apixel.manager.pojo.User;
 import com.apixel.manager.dao.UserMapper;
 import com.apixel.manager.service.IUserService;
-import com.apixel.manager.utils.CodeMsg;
-import com.apixel.manager.utils.CookieUtils;
-import com.apixel.manager.utils.Message;
-import com.apixel.manager.utils.RedisUtils;
+import com.apixel.manager.utils.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,9 +52,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (uList == null||uList.size()==0) {
             throw new GlobalException(CodeMsg.LOGIN_ERROR);
         }
-        //验证密码，这里为了例子简单，密码没有加密
         String dbPass = uList.get(0).getPassword();
-        if (!password.equals(dbPass)) {
+        if (!CommonUtils.md5Encrypt(password).equals(dbPass)) {
             throw new GlobalException(CodeMsg.LOGIN_ERROR);
         }
         //生成cookie

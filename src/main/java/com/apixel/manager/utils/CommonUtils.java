@@ -1,9 +1,12 @@
 package com.apixel.manager.utils;
 
+import java.security.MessageDigest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommonUtils {
+
+    private static final String slat = "&%5123***&&%%$$#@";
     /**
      * 清除html标签
      *
@@ -48,4 +51,21 @@ public class CommonUtils {
         return textStr;
     }
 
+    public static String md5Encrypt(String dataStr) {
+        try {
+            dataStr = dataStr + slat;
+            MessageDigest m = MessageDigest.getInstance("MD5");
+            m.update(dataStr.getBytes("UTF8"));
+            byte s[] = m.digest();
+            String result = "";
+            for (int i = 0; i < s.length; i++) {
+                result += Integer.toHexString((0x000000FF & s[i]) | 0xFFFFFF00).substring(6);
+            }
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
 }

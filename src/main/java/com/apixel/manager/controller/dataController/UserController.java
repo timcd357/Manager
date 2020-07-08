@@ -4,10 +4,7 @@ package com.apixel.manager.controller.dataController;
 import com.apixel.manager.exception.GlobalException;
 import com.apixel.manager.pojo.User;
 import com.apixel.manager.service.IUserService;
-import com.apixel.manager.utils.CodeMsg;
-import com.apixel.manager.utils.CosTant;
-import com.apixel.manager.utils.Message;
-import com.apixel.manager.utils.RedisUtils;
+import com.apixel.manager.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -38,6 +35,7 @@ public class UserController {
         return "/user/login";
     }
     @PostMapping("regist")
+    @ResponseBody
     public Message regist(@ModelAttribute User user){
         if(user==null||StringUtils.isEmpty(user.getUserName())||StringUtils.isEmpty(user.getPassword())){
             throw new GlobalException(CodeMsg.USERMSG_ERROR);
@@ -65,7 +63,7 @@ public class UserController {
 //            return Message.error(CodeMsg.PHONE_DUPLICATE);
             }
         }
-
+        user.setPassword(CommonUtils.md5Encrypt(user.getPassword()));
         userService.insertUser(user);
         return Message.success();
     }

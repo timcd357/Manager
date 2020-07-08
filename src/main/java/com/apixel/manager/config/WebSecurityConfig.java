@@ -23,7 +23,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginHandleInterceptor()).addPathPatterns("/**")
                 .excludePathPatterns("/index","/","/login","/regist","/js/**","/css/**","/manager/user/login",
-                        "/manager/user/regist","/manager/user/addUser","/getUserByToken");
+                        "/manager/user/regist","/manager/user/addUser","/getUserByToken","/manager/user/checkUserName");
     }
 
     @Override

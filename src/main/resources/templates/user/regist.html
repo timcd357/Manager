@@ -15,27 +15,41 @@
 <body>
 <div class="container center-block">
     <div th:replace="~{user/sidebar :: headerBar}"></div>
-    <form action="#" th:method="post" id="registForm" role="form">
-        <div class="form-group">
+    <form action="#" id="registForm">
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
             <label for="userName">用户名</label>
             <input type="text" class="form-control" id="userName" placeholder="用户名" name="userName" onblur="isDupUserName()" required>
+            <div class="invalid-feedback" id="userNameTip"></div>
+            </div>
         </div>
-        <span id="userNameTip" style="color: red"></span>
-        <div class="form-group">
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
             <label for="email">邮箱</label>
             <input type="email" class="form-control" id="email" placeholder="邮箱" name="email">
+            <div class="invalid-feedback" id="emailTip"></div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="InputPassword">密码</label>
-            <input type="password" class="form-control" id="InputPassword" placeholder="密码" name="password" required>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+            <label for="password">密码</label>
+            <input type="password" class="form-control" id="password" placeholder="密码" name="password" required>
+            <div class="invalid-feedback" id="passwordTip"></div>
+            </div>
         </div>
-        <div class="form-group">
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
             <label for="reInputPassword">重复密码</label>
             <input type="password" class="form-control" id="reInputPassword" placeholder="重复密码" required>
+            <div class="invalid-feedback" id="reInputPasswordTip"></div>
+            </div>
         </div>
-        <div class="form-group">
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
             <label for="phone">电话</label>
-            <input type="password" class="form-control" id="phone" placeholder="电话" name="phone">
+            <input type="tel" class="form-control" id="phone" placeholder="电话" name="phone">
+            <div class="invalid-feedback" id="phoneTip"></div>
+            </div>
         </div>
 
         <input type="hidden" value="0" name="role">
@@ -50,7 +64,9 @@
     <script type="text/javascript" th:src="@{/js/registAndLogin.js}"></script>
 </div>
 <script>
-
+    $(function () {
+        regex();
+    })
 </script>
 </body>
 </html>

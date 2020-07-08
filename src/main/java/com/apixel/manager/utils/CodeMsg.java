@@ -17,7 +17,7 @@ public class CodeMsg {
     public static CodeMsg USERNAME_DUPLICATE = new CodeMsg(500203, "用户名重复");
     public static CodeMsg EMAIL_DUPLICATE = new CodeMsg(500204, "邮箱已注册");
     public static CodeMsg PHONE_DUPLICATE = new CodeMsg(500205, "手机号已注册");
-    public static CodeMsg USERMSG_ERROR = new CodeMsg(500206, "错误的用户信息");
+    public static CodeMsg USERMSG_ERROR = new CodeMsg(500206, "用户名或密码为空");
 
     private CodeMsg() {
     }
