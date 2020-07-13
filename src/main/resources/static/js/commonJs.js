@@ -1,3 +1,4 @@
+var userInfo;
 $(function () {
     isLogin();
 })
@@ -17,6 +18,8 @@ function isLogin(){
                 // console.log(m.userName);
                 $("#isLogin").replaceWith("<span>欢迎：</span>\n" +
                     "                    <span id=\"userName\">"+m.userName+"</span>");
+                userInfo=m;
+                $("input[name='userid']").val(userInfo.id);
             },
             error:function (e) {
                 alert(e);

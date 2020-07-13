@@ -3,12 +3,20 @@ $('input[required]').before('<span style="color:red">*</span>');
 var email = /\w+[@]{1}\w+[.]\w+/;
 var phone = /^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$|(^(13[0-9]|15[0|3|6|7|8|9]|18[8|9])\d{8}$)/;
 var psd = /^[0-9a-zA-Z_]{6,15}$/;
+
+function clearClass(){
+    $("input").each(function () {
+        $(this).next("div").removeClass("invalid-feedback");
+        $(this).next("div").removeClass("valid-feedback");
+    });
+}
 //************登录用js方法****************//
 /**
  * 使用ajax进行登录
  */
 function loginByAjax() {
     var param = $("#loginForm").serialize();
+    clearClass();
     $.post("/manager/user/login",param,function (m) {
         console.log(m);
         if(m.code==200){
@@ -36,11 +44,12 @@ function registerByAjax() {
         return false;
     }
     var param = $("#registForm").serialize();
+    clearClass();
     $.post("/manager/user/regist",param,function (m) {
         console.log(m);
         if(m.code==200){
             alert("注册成功")
-            window.location.href="/user/login";
+            window.location.href="/login";
         }else {
             // alert(m.msg);
             $("#registMsg").text(m.msg);
@@ -127,20 +136,14 @@ function verfication(id,regex,tip){
 }
 
 function registVerfi() {
-    var bool = false;
-    if(verfication("email",email,"邮箱格式不正确，请输入如\"yourname@abc.com\"样式的邮箱地址！")){
-        bool = true;
-    }else {
+    var bool = true;
+    if(!verfication("email",email,"邮箱格式不正确，请输入如\"yourname@abc.com\"样式的邮箱地址！")){
         bool=false;
     }
-    if(verfication("phone",phone,"请输入正确的电话号码！")){
-        bool = true;
-    }else {
+    if(!verfication("phone",phone,"请输入正确的电话号码！")){
         bool=false;
     }
-    if(verfication("password",psd,"请输入6至15个任意数字及字母的组合")){
-        bool = true;
-    }else {
+    if(!verfication("password",psd,"请输入6至15个任意数字及字母的组合")){
         bool=false;
     }
     if($("#reInputPassword").val()!=$("#password").val()){
@@ -149,7 +152,6 @@ function registVerfi() {
         bool = false;
     }else {
         regexClass("reInputPassword",true);
-        bool = true;
     }
     $("input[required]").each(function (i) {
         if($(this).val().trim()==""){

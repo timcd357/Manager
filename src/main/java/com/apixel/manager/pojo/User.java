@@ -19,6 +19,8 @@ public class User implements Serializable {
 
     private static final long serialVersionUID=1L;
 
+    private String id;
+
     /**
      * 用户名
      */
@@ -63,6 +65,14 @@ public class User implements Serializable {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserName() {

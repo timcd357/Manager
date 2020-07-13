@@ -55,6 +55,11 @@
 
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
+
+    $("#deleteToken").click(function () {
+        $.removeCookie('login_token',{ path: '/'});
+        window.location.href("/manager/user/login")
+    })
 </script>
 </body>
 </html>

@@ -15,25 +15,83 @@
 <body>
 <div class="container" style="text-align: center">
     <div th:replace="~{user/sidebar :: headerBar}"></div>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text">日期</span>
+    <form id="businessForm">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="date">日期</label>
+                <input type="date" class="form-control" id="date" name="date">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="itemname">产品名称</label>
+                <input type="text" class="form-control" id="itemname" name="itemname" placeholder="输入产品名称">
+            </div>
         </div>
-        <div class="input-group-prepend">
-            <span class="input-group-text">产品名称</span>
+        <div class="form-group">
+            <label for="batch">批号/流水号</label>
+            <input type="text" class="form-control" id="batch" name="batch" placeholder="输入批号/流水号">
         </div>
-        <div class="input-group-prepend">
-            <span class="input-group-text">数量</span>
+        <div class="form-group">
+            <label for="num">数量</label>
+            <input type="number" class="form-control" id="num" name="num" placeholder="输入物品数量">
         </div>
-    </div>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <input type="date">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="price">单价</label>
+                <input type="number" class="form-control" id="price" name="price" placeholder="输入物品单价">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="factory">厂家</label>
+                <input type="text" class="form-control" id="factory" name="factory" placeholder="输入生产厂家名">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="did">做了什么</label>
+                <input type="text" class="form-control" id="did" name="did" placeholder="输入如买入、卖出、录入等">
+            </div>
         </div>
-        <input type="text" aria-label="First name" class="form-control" placeholder="产品名称">
-        <input type="number" aria-label="Last name" class="form-control" placeholder="数量">
-    </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="start">位置（起点）</label>
+                <input type="text" class="form-control" id="start" name="start" placeholder="输入该物品起始位置">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="end">位置（终点）</label>
+                <input type="text" class="form-control" id="end" name="end" placeholder="输入该物品最终到达位置">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="comment">备注</label>
+                <input type="text" class="form-control" id="comment" name="comment" placeholder="输入备注">
+            </div>
+            <input type="hidden" name="userid">
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="addRecord();">添加</button>
+    </form>
 </div>
 <div th:replace="~{templates/commonJs :: commonJs}"></div>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
+<script>
+    $(function () {
+        var time = new Date();
+        var day = ("0" + time.getDate()).slice(-2);
+        var month = ("0" + (time.getMonth() + 1)).slice(-2);
+        var today = time.getFullYear() + "-" + (month) + "-" + (day);
+        $('#date').val(today);
+    })
+
+    function addRecord() {
+        $.ajax({
+            url: "/user-business/insert",
+            data: $("#businessForm").serialize(),
+            type: "put",
+            success: function (m) {
+                alert(m.msg);
+            },
+            error: function (e) {
+                alert(e.msg);
+            }
+        })
+    }
+</script>
 </body>
 </html>
