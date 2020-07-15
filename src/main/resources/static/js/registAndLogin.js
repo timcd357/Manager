@@ -129,6 +129,7 @@ function verfication(id,regex,tip){
             return false;
         }else {
             regexClass(id,true);
+            return true;
         }
     }else {
         return true;

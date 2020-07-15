@@ -1,9 +1,11 @@
 package com.apixel.manager.pojo;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -19,6 +21,7 @@ public class User implements Serializable {
 
     private static final long serialVersionUID=1L;
 
+    @TableId(type= IdType.ASSIGN_UUID)
     private String id;
 
     /**
