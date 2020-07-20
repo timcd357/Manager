@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/css.css}">
     <script th:src="@{/js/echarts.min.js}"></script>
     <style type="text/css">
-        body{
+        body {
             margin-top: 100px;
         }
     </style>
@@ -17,20 +17,57 @@
 
 <div class="container-fluid">
     <div th:replace="~{user/sidebar :: headerBar}"></div>
-    <div class="row">
-        <div class="col-md-2">
-        <div th:replace="~{user/sidebar :: navBar}"></div>
-        </div>
-        <div class="col-md-10">
-            <div id="main" style="width: 600px;height:400px;"></div>
-        </div>
-    </div>
-    <main>
+    <div class="container">
+        <form id="queryForm" class="shadow p-3 mb-5 bg-white rounded">
+            <div class="form-row">
+                <div class="form-group col-4">
+                    <label for="itemname">产品名称：</label>
+                    <input type="text" class="form-control" id="itemname" placeholder="产品名" name="itemname">
+                </div>
+                <div class="form-group col-4">
+                    <label for="factory">厂家名称：</label>
+                    <input type="text" class="form-control" id="factory" placeholder="厂家名" name="factory">
+                </div>
+                <div class="form-group col-4">
+                    <label for="batch">流水号：</label>
+                    <input type="text" class="form-control" id="batch" placeholder="流水号/批号" name="batch">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-4">
+                    <label for="factory">位置（起点）：</label>
+                    <input type="text" class="form-control" id="start" placeholder="物资的起点处" name="start">
+                </div>
+                <div class="form-group col-4">
+                    <label for="factory">位置（终点）：</label>
+                    <input type="text" class="form-control" id="end" placeholder="物资最终到达" name="end">
+                </div>
+                <div class="form-group col-4">
+                    <label for="date">日期：</label>
+                    <input type="date" class="form-control" id="date" placeholder="存储该记录时间" name="date">
+                </div>
+            </div>
+            <button type="button" class="btn btn-info pull-right" onclick="getQuery()">查询</button>
+        </form>
+        <div class="row" style="margin-top: 15px;">
 
-    </main>
+            <div class="col-md-10">
+                <div id="main" style="width: 600px;height:400px;"></div>
+            </div>
+        </div>
+        <main>
+
+        </main>
+    </div>
+    <div class="col-md-2">
+        <div th:replace="~{user/sidebar :: navBar}"></div>
+    </div>
 </div>
 <div th:replace="~{templates/commonJs :: commonJs}"></div>
 <script type="text/javascript">
+    $(function () {
+        getQuery();
+    })
     var myChart = echarts.init(document.getElementById('main'));
 
     // 指定图表的配置项和数据
@@ -38,18 +75,27 @@
         title: {
             text: 'ECharts 入门示例'
         },
+        dataset: {
+            dimensions: ['itemname', 'num', 'price'],
+            source: []
+        },
         tooltip: {},
         legend: {
-            data:['销量']
+            data: ['销量']
         },
         xAxis: {
-            data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            type: 'category',
+            axisLabel: {
+                rotate: 45
+            }
         },
         yAxis: {},
         series: [{
-            name: '销量',
+            name:'数量',
             type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
+        },{
+            name: '价格',
+            type: 'bar',
         }]
     };
 
@@ -57,9 +103,38 @@
     myChart.setOption(option);
 
     $("#deleteToken").click(function () {
-        $.removeCookie('login_token',{ path: '/'});
+        $.removeCookie('login_token', {path: '/'});
         window.location.href("/manager/user/login")
     })
+
+    function getQuery() {
+        $.ajax({
+            url: '/user-business/getRecordByParams?r=' + Math.random(),
+            type: 'get',
+            data: $("#queryForm").serialize(),
+            success: function (m) {
+                $.each(m.data,function (index,res) {
+                    delete m.data[index]['id'];
+                    delete m.data[index]['batch'];
+                    delete m.data[index]['comment'];
+                    delete m.data[index]['date'];
+                    delete m.data[index]['did'];
+                    delete m.data[index]['start'];
+                    delete m.data[index]['end'];
+                    delete m.data[index]['factory'];
+                    delete m.data[index]['userid'];
+                    delete m.data[index]['flag'];
+                })
+                option.dataset.source = m.data;
+                // option.title.text='测试用';
+                console.log(option)
+                myChart.setOption(option);
+            },
+            error: function (e) {
+                alert(e.msg);
+            }
+        })
+    }
 </script>
 </body>
 </html>

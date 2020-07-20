@@ -6,8 +6,10 @@ import com.apixel.manager.dao.UserBusinessMapper;
 import com.apixel.manager.service.IUserBusinessService;
 import com.apixel.manager.utils.CodeMsg;
 import com.apixel.manager.utils.Message;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -59,5 +61,19 @@ public class UserBusinessServiceImpl extends ServiceImpl<UserBusinessMapper, Use
             userBusinessMapper.deleteById(id);
         }
         return Message.success();
+    }
+
+    @Override
+    public Message getRecord(String itemname, String factory, String batch, String start, String end, String date) {
+        QueryWrapper<UserBusiness> wrapper = new QueryWrapper<>();
+        wrapper.like(!StringUtils.isEmpty(itemname),"itemname",itemname);
+        wrapper.like(!StringUtils.isEmpty(factory),"factory",factory);
+        wrapper.like(!StringUtils.isEmpty(batch),"batch",batch);
+        wrapper.like(!StringUtils.isEmpty(start),"start",start);
+        wrapper.like(!StringUtils.isEmpty(end),"end",end);
+        wrapper.eq(!StringUtils.isEmpty(date),"date",date);
+        List<UserBusiness> list = userBusinessMapper.selectList(wrapper);
+
+        return Message.success(list);
     }
 }

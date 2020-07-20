@@ -19,4 +19,5 @@ public interface IUserBusinessService extends IService<UserBusiness> {
     Message insertRecord(UserBusiness userBusiness);
     Message getRecord();
     Message deleteRecord(List<String> ids);
+    Message getRecord(String itemname,String factory,String batch,String start,String end,String date);
 }

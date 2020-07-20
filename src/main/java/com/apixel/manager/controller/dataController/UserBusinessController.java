@@ -38,12 +38,16 @@ public class UserBusinessController {
         return userBusinessService.insertRecord(record);
     }
     @GetMapping("/getRecord")
-    public Message getAllRecord(){
+    public Message getRecord(){
         return userBusinessService.getRecord();
     }
     @DeleteMapping("/deleteRecord")
     public Message deleteRecord(@RequestParam("ids") List<String> ids){
         return userBusinessService.deleteRecord(ids);
+    }
+    @GetMapping("/getRecordByParams")
+    public Message getRecord(String itemname,String factory,String batch,String start,String end,String date){
+        return userBusinessService.getRecord(itemname,factory,batch,start,end,date);
     }
 }
 
