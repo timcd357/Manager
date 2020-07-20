@@ -45,4 +45,19 @@ public class UserBusinessServiceImpl extends ServiceImpl<UserBusinessMapper, Use
         userBusinessMapper.insert(userBusiness);
         return Message.success();
     }
+
+    @Override
+    public Message getRecord() {
+        List<UserBusiness> userBusinesses = userBusinessMapper.selectList(null);
+        return Message.success(userBusinesses);
+    }
+
+    @Override
+    public Message deleteRecord(List<String> ids) {
+        for (String id:ids
+             ) {
+            userBusinessMapper.deleteById(id);
+        }
+        return Message.success();
+    }
 }

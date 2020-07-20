@@ -29,4 +29,8 @@ public class MainPageController {
     public String userLog(){
         return "/user/userLog";
     }
+    @RequestMapping("/location")
+    public String location(){
+        return "/console/location";
+    }
 }

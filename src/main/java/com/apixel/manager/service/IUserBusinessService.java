@@ -17,5 +17,6 @@ import java.util.List;
 public interface IUserBusinessService extends IService<UserBusiness> {
     Message insertRecord(List<UserBusiness> records);
     Message insertRecord(UserBusiness userBusiness);
-
+    Message getRecord();
+    Message deleteRecord(List<String> ids);
 }

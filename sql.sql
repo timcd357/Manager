@@ -1,30 +1,41 @@
 CREATE TABLE `user` (
-  `id` varchar(36) NOT NULL COMMENT 'Ö÷¼ü',
-  `userName` varchar(45) NOT NULL COMMENT 'ÓÃ»§Ãû',
-  `password` varchar(45) NOT NULL COMMENT 'ÃÜÂë',
-  `phone` varchar(45) DEFAULT NULL COMMENT 'ÊÖ»úºÅ',
-  `email` varchar(45) DEFAULT NULL COMMENT 'ÓÊÏä',
-  `status` int DEFAULT NULL COMMENT 'ÓÃ»§×´Ì¬£¬0ÎªÕı³££¬1Îª·â½û£¬2ÎªÉ¾³ı',
-  `idCard` int DEFAULT NULL COMMENT 'Éí·İÖ¤ºÅ',
-  `role` int DEFAULT NULL COMMENT 'ÓÃ»§È¨ÏŞ£¬0Îª¹ÜÆÕÍ¨ÓÃ»§£¬1Îª¹ÜÀíÔ±£¬2Îª³¬¼¶¹ÜÀíÔ±',
-  `name` varchar(45) DEFAULT NULL COMMENT 'ÓÃ»§ÊµÃû',
+  `id` varchar(36) NOT NULL COMMENT 'ä¸»é”®',
+  `userName` varchar(45) NOT NULL COMMENT 'ç”¨æˆ·å',
+  `password` varchar(45) NOT NULL COMMENT 'å¯†ç ',
+  `phone` varchar(45) DEFAULT NULL COMMENT 'æ‰‹æœºå·',
+  `email` varchar(45) DEFAULT NULL COMMENT 'é‚®ç®±',
+  `status` int DEFAULT NULL COMMENT 'ç”¨æˆ·çŠ¶æ€ï¼Œ0ä¸ºæ­£å¸¸ï¼Œ1ä¸ºå°ç¦ï¼Œ2ä¸ºåˆ é™¤',
+  `idCard` int DEFAULT NULL COMMENT 'èº«ä»½è¯å·',
+  `role` int DEFAULT NULL COMMENT 'ç”¨æˆ·æƒé™ï¼Œ0ä¸ºç®¡æ™®é€šç”¨æˆ·ï¼Œ1ä¸ºç®¡ç†å‘˜ï¼Œ2ä¸ºè¶…çº§ç®¡ç†å‘˜',
+  `name` varchar(45) DEFAULT NULL COMMENT 'ç”¨æˆ·å®å',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-
 CREATE TABLE `user_business` (
-  `id` varchar(50) NOT NULL COMMENT 'Ö÷¼ü',
-  `date` date NOT NULL COMMENT 'ÈÕÆÚ',
-  `itemname` varchar(200) DEFAULT NULL COMMENT 'ÎïÆ·Ãû³Æ',
-  `batch` varchar(200) DEFAULT NULL COMMENT 'ÅúºÅ/Á÷Ë®ºÅ',
-  `num` float NOT NULL COMMENT 'ÊıÁ¿',
-  `price` float DEFAULT NULL COMMENT 'µ¥¼Û',
-  `factory` varchar(200) DEFAULT NULL COMMENT '³§¼Ò',
-  `did` varchar(100) NOT NULL COMMENT '×öÁËÊ²Ã´',
-  `start` varchar(200) DEFAULT NULL COMMENT 'Î»ÖÃ£¨Æğµã£©',
-  `end` varchar(200) DEFAULT NULL COMMENT 'Î»ÖÃ£¨ÖÕµã£©',
-  `userid` varchar(50) NOT NULL COMMENT 'ÓÃ»§Ö÷¼ü',
+  `id` varchar(50) NOT NULL COMMENT 'ä¸»é”®',
+  `date` date NOT NULL COMMENT 'æ—¥æœŸ',
+  `itemname` varchar(200) DEFAULT NULL COMMENT 'ç‰©å“åç§°',
+  `batch` varchar(200) DEFAULT NULL COMMENT 'æ‰¹å·/æµæ°´å·',
+  `num` float NOT NULL COMMENT 'æ•°é‡',
+  `price` float DEFAULT NULL COMMENT 'å•ä»·',
+  `factory` varchar(200) DEFAULT NULL COMMENT 'å‚å®¶',
+  `did` varchar(100) NOT NULL COMMENT 'åšäº†ä»€ä¹ˆ',
+  `start` varchar(200) DEFAULT NULL COMMENT 'ä½ç½®ï¼ˆèµ·ç‚¹ï¼‰',
+  `end` varchar(200) DEFAULT NULL COMMENT 'ä½ç½®ï¼ˆç»ˆç‚¹ï¼‰',
+  `userid` varchar(50) NOT NULL COMMENT 'ç”¨æˆ·ä¸»é”®',
   `flag` int(11) DEFAULT '0',
-  `comment` varchar(200) DEFAULT NULL COMMENT '±¸×¢',
+  `comment` varchar(200) DEFAULT NULL COMMENT 'å¤‡æ³¨',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='ÓÃ»§ÒµÎñ±í'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='ç”¨æˆ·ä¸šåŠ¡è¡¨'
+
+CREATE TABLE `query_location` (
+  `id` int NOT NULL COMMENT 'ä¸»é”®',
+  `start` int NOT NULL DEFAULT '1' COMMENT 'æ˜¯å¦èƒ½ä½œä¸ºèµ·å§‹ç‚¹ï¼ˆ0å¦1æ˜¯ï¼‰',
+  `content` varchar(200) NOT NULL COMMENT 'å†…å®¹',
+  `end` int NOT NULL DEFAULT '1' COMMENT 'æ˜¯å¦èƒ½ä½œä¸ºç»ˆç‚¹ï¼ˆ0å¦1æ˜¯ï¼‰',
+  `flag` int DEFAULT NULL COMMENT 'æ ‡å¿—ä½',
+  `comment` varchar(200) DEFAULT NULL COMMENT 'å¤‡æ³¨',
+  `userid` varchar(36) NOT NULL COMMENT 'æ·»åŠ è¯¥è®°å½•çš„äºº',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='ç”¨äºè®°å½•å¯¹åº”çš„ä½ç½®ä¿¡æ¯'
+

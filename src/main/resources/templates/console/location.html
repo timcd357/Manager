@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!--    <link rel="stylesheet" th:href="@{/css/css.css}">-->
+    <style type="text/css">
+        body {
+            margin-top: 100px;
+        }
+    </style>
+    <title>位置信息管理</title>
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{user/sidebar :: headerBar}"></div>
+    <form id="locationForm">
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label for="content">位置</label>
+                <input type="text" class="form-control" id="content" name="content" placeholder="输入该物品起始位置">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group form-check col-md-12">
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input" id="start" name="start" checked>
+                    <label for="start" class="form-check-label">作为起点</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input" id="end" name="end" checked>
+                    <label for="end" class="form-check-label">作为终点</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label for="comment">备注</label>
+                <textarea class="form-control" id="comment" name="comment" placeholder="输入备注"></textarea>
+            </div>
+        </div>
+        <input type="hidden" name="userid">
+        <button type="button" class="btn btn-primary" onclick="addLocation();">添加</button>
+    </form>
+</div>
+<div th:replace="~{templates/commonJs :: commonJs}"></div>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
+<script>
+    $(function () {
+        $("input[type='checkbox']").each(function () {
+            console.log($(this).val())
+        })
+    })
+
+    function addLocation() {
+        $.ajax({
+            url: "",
+            data: $("#locationForm").serialize(),
+            type: "put",
+            success: function (m) {
+                alert(m.msg);
+            },
+            error: function (e) {
+                alert(e.msg);
+            }
+        })
+    }
+</script>
+</body>
+</html>

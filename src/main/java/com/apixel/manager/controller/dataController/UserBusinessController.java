@@ -37,6 +37,13 @@ public class UserBusinessController {
     public Message insertdata(UserBusiness record) {
         return userBusinessService.insertRecord(record);
     }
-
+    @GetMapping("/getRecord")
+    public Message getAllRecord(){
+        return userBusinessService.getRecord();
+    }
+    @DeleteMapping("/deleteRecord")
+    public Message deleteRecord(@RequestParam("ids") List<String> ids){
+        return userBusinessService.deleteRecord(ids);
+    }
 }
 
