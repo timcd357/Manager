@@ -17,8 +17,8 @@
 
 <div class="container-fluid">
     <div th:replace="~{user/sidebar :: headerBar}"></div>
-    <div class="container">
-        <form id="queryForm" class="shadow p-3 mb-5 bg-white rounded">
+    <div class="container shadow p-3 mb-5 bg-white rounded">
+        <form id="queryForm">
             <div class="form-row">
                 <div class="form-group col-4">
                     <label for="itemname">产品名称：</label>
@@ -49,58 +49,97 @@
             </div>
             <button type="button" class="btn btn-info pull-right" onclick="getQuery()">查询</button>
         </form>
-        <div class="row" style="margin-top: 15px;">
+        <main>
+            <div class="row" style="margin: 15px;">
 
-            <div class="col-md-10">
-                <div id="main" style="width: 600px;height:400px;"></div>
+                <div class="col-md-10 justify-content-md-center">
+                    <div id="main" style="width: 800px;height: 400px" class="col-md-12 ml-md-auto"></div>
+                </div>
+            </div>
+        </main>
+
+        <a class="btn btn-primary" data-toggle="collapse" href="#optionSetting" role="button" aria-expanded="false"
+           aria-controls="multiCollapseExample1">自定义图形</a>
+        <!--            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Toggle second element</button>-->
+        <!--            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Toggle both elements</button>-->
+        <div class="row">
+            <div class="col">
+                <div class="collapse multi-collapse" id="optionSetting">
+                    <div class="card card-body">
+                        <form>
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">标题</span>
+                                    </div>
+                                    <input type="text" class="form-control col-7" id="title" name="title">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="titleItalic"><i>Ⅰ</i></button>
+                                        <button class="btn btn-outline-secondary" type="button" id="titleBold"><strong>B</strong></button>
+                                        <select class="form-control col-6" id="titleFontSize">16</select>
+                                        <input type="color" class="form-control col-5" id="titleColor">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAddress">Address</label>
+                                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAddress2">Address 2</label>
+                                <input type="text" class="form-control" id="inputAddress2"
+                                       placeholder="Apartment, studio, or floor">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputCity">City</label>
+                                    <input type="text" class="form-control" id="inputCity">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputState">希望展现的数据</label>
+                                    <select id="inputState" class="form-control">
+                                        <option>Choose...</option>
+                                        <option>...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="inputZip">Zip</label>
+                                    <input type="text" class="form-control" id="inputZip">
+                                </div>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineCheckbox1" value="option1">
+                                <label class="form-check-label" for="inlineCheckbox1"></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineCheckbox2" value="option2">
+                                <label class="form-check-label" for="inlineCheckbox2">2</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineCheckbox3" value="option3">
+                                <label class="form-check-label" for="inlineCheckbox3">3 (disabled)</label>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="variableOption()">确定</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-        <main>
-
-        </main>
     </div>
+
     <div class="col-md-2">
         <div th:replace="~{user/sidebar :: navBar}"></div>
     </div>
 </div>
 <div th:replace="~{templates/commonJs :: commonJs}"></div>
+<script th:src="@{/js/echartsOption.js}"></script>
 <script type="text/javascript">
     $(function () {
         getQuery();
+        fontSizeList();
+        active();
     })
-    var myChart = echarts.init(document.getElementById('main'));
-
     // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: 'ECharts 入门示例'
-        },
-        dataset: {
-            dimensions: ['itemname', 'num', 'price'],
-            source: []
-        },
-        tooltip: {},
-        legend: {
-            data: ['销量']
-        },
-        xAxis: {
-            type: 'category',
-            axisLabel: {
-                rotate: 45
-            }
-        },
-        yAxis: {},
-        series: [{
-            name:'数量',
-            type: 'bar',
-        },{
-            name: '价格',
-            type: 'bar',
-        }]
-    };
-
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
 
     $("#deleteToken").click(function () {
         $.removeCookie('login_token', {path: '/'});
@@ -113,27 +152,61 @@
             type: 'get',
             data: $("#queryForm").serialize(),
             success: function (m) {
-                $.each(m.data,function (index,res) {
-                    delete m.data[index]['id'];
-                    delete m.data[index]['batch'];
-                    delete m.data[index]['comment'];
-                    delete m.data[index]['date'];
-                    delete m.data[index]['did'];
-                    delete m.data[index]['start'];
-                    delete m.data[index]['end'];
-                    delete m.data[index]['factory'];
-                    delete m.data[index]['userid'];
-                    delete m.data[index]['flag'];
-                })
-                option.dataset.source = m.data;
+                mainFirstoption.dataset.source = m.data;
                 // option.title.text='测试用';
-                console.log(option)
-                myChart.setOption(option);
+                // console.log(mainFirstoption)
+                myChart.setOption(mainFirstoption);
             },
             error: function (e) {
                 alert(e.msg);
             }
         })
+    }
+
+    window.addEventListener("resize", function () {
+        myChart.resize();
+    })
+
+    /*$("#color").blur(function () {
+        console.log($(this).val())
+    })*/
+    function fontSizeList(){
+        var fontSize = ['12px', '14px', '16px', '18px', '20px', '24px', '36px'];
+        for (var i = 0; i < fontSize.length; i++) {
+            // ES6字符串模板
+            var Html = `<option>${fontSize[i]}</option>`
+            $("#titleFontSize").append(Html);
+            $("#titleFontSize option").eq(i).css('font-size', fontSize[i]);
+            // alert($("#titleFontSize option").eq(i).css('font-size'))
+        }
+        // ES6箭头函数
+        $('body').on("change", "#titleFontSize", () => {
+            var fontCss = $("#titleFontSize").find('option:selected').css('font-size');
+            $("#title").css('font-size', fontCss);
+            $("#title").next('div').children().css('font-size', fontCss);
+        })
+    }
+
+    function active() {
+        var title = $("#title");
+        $("#titleItalic").click(function () {
+            $(this).toggleClass('active');
+            if(title.css('fontStyle')=='italic'){
+                title.css('fontStyle','')
+            }else {
+                title.css('fontStyle','italic')
+            }
+        })
+        $("#titleBold").click(function () {
+            $(this).toggleClass('active');
+            // alert(title.css('fontWeight'))
+            if(title.css('fontWeight')=='700'){
+                title.css('fontWeight','Normal')
+            }else {
+                title.css('fontWeight','Bold')
+            }
+        })
+
     }
 </script>
 </body>
