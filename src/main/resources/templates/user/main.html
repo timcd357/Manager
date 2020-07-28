@@ -66,24 +66,54 @@
             <div class="col">
                 <div class="collapse multi-collapse" id="optionSetting">
                     <div class="card card-body">
-                        <form>
-                            <div class="form-row">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">标题</span>
-                                    </div>
-                                    <input type="text" class="form-control col-7" id="title" name="title">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button" id="titleItalic"><i>Ⅰ</i></button>
-                                        <button class="btn btn-outline-secondary" type="button" id="titleBold"><strong>B</strong></button>
-                                        <select class="form-control col-6" id="titleFontSize">16</select>
-                                        <input type="color" class="form-control col-5" id="titleColor">
+                        <form id="customForm">
+                            <div class="form-group">
+                                <label for="eTitle">标题设置</label>
+                                <div class="form-row" id="eTitle">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control col-7 textInput" id="title" name="title"
+                                               placeholder="输入标题内容">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" id="titleItalic"
+                                                    name="titleItalic"><i>Ⅰ</i></button>
+                                            <button class="btn btn-outline-secondary" type="button" id="titleBold"
+                                                    name="titleBold"><strong>B</strong></button>
+                                            <select class="form-control col-6 fontOption" id="titleFontSize" name="titleFontSize">16px</select>
+                                            <input type="color" class="form-control col-5" id="titleColor"
+                                                   name="titleColor">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputAddress">Address</label>
-                                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                                <label for="xAxis" data-toggle="collapse" href="#xAxis" role="button" aria-expanded="false"
+                                       aria-controls="multiCollapseExample1">&or;横轴设置</label>
+                                <div id="xAxis" class="collapse multi-collapse">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control col-7 textInput" id="xAxisName" name="xAxisName"
+                                               placeholder="输入x轴名字，将显示在右侧">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" id="xAxisItalic"
+                                                    name="xAxisItalic"><i>Ⅰ</i></button>
+                                            <button class="btn btn-outline-secondary" type="button" id="xAxisBold"
+                                                    name="xAxisBold"><strong>B</strong></button>
+                                            <select class="form-control col-6 fontOption" id="xAxisFontSize" name="xAxisFontSize">16px</select>
+                                            <input type="color" class="form-control col-5" id="xAxisColor"
+                                                   name="xAxisColor">
+                                        </div>
+                                    </div>
+                                    <input type="checkbox" class="checkbox" name="showXAxis" checked>显示
+                                    <div class="form-group">
+                                        <label for="xPosition">横轴位置（上下）</label>
+                                        <select class="form-control" id="xPosition" name="xPosition">
+                                            <option>top</option>
+                                            <option>bottom</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputAddress2">Address 2</label>
@@ -170,20 +200,21 @@
     /*$("#color").blur(function () {
         console.log($(this).val())
     })*/
-    function fontSizeList(){
+    function fontSizeList() {
         var fontSize = ['12px', '14px', '16px', '18px', '20px', '24px', '36px'];
         for (var i = 0; i < fontSize.length; i++) {
             // ES6字符串模板
             var Html = `<option>${fontSize[i]}</option>`
-            $("#titleFontSize").append(Html);
-            $("#titleFontSize option").eq(i).css('font-size', fontSize[i]);
+            $(".fontOption").append(Html);
+            $(".fontOption option").eq(i).css('font-size', fontSize[i]);
             // alert($("#titleFontSize option").eq(i).css('font-size'))
         }
+        $(".fontOption").val('16px');
         // ES6箭头函数
-        $('body').on("change", "#titleFontSize", () => {
-            var fontCss = $("#titleFontSize").find('option:selected').css('font-size');
-            $("#title").css('font-size', fontCss);
-            $("#title").next('div').children().css('font-size', fontCss);
+        $('body').on("change", ".fontOption", () => {
+            var fontCss = $(".fontOption").find('option:selected').css('font-size');
+            $(".textInput").css('font-size', fontCss);
+            $(".textInput").next('div').children().css('font-size', fontCss);
         })
     }
 
@@ -191,19 +222,23 @@
         var title = $("#title");
         $("#titleItalic").click(function () {
             $(this).toggleClass('active');
-            if(title.css('fontStyle')=='italic'){
-                title.css('fontStyle','')
-            }else {
-                title.css('fontStyle','italic')
+            if (title.css('fontStyle') == 'italic') {
+                title.css('fontStyle', '');
+                $(this).val('normal');
+            } else {
+                title.css('fontStyle', 'italic')
+                $(this).val('italic');
             }
         })
         $("#titleBold").click(function () {
             $(this).toggleClass('active');
             // alert(title.css('fontWeight'))
-            if(title.css('fontWeight')=='700'){
-                title.css('fontWeight','Normal')
-            }else {
-                title.css('fontWeight','Bold')
+            if (title.css('fontWeight') == '700') {
+                title.css('fontWeight', 'Normal');
+                $(this).val('normal');
+            } else {
+                title.css('fontWeight', 'Bold');
+                $(this).val('bold');
             }
         })
 

@@ -16,7 +16,7 @@ var mainFirstoption = {
     ],*/
     toolbox: {
         show: true,
-        orient: "vertical",
+        orient: "horizontal",
         feature: {
             dataZoom: {
                 yAxisIndex: "none"
@@ -31,6 +31,13 @@ var mainFirstoption = {
             saveAsImage: {}
         },
         showTitle: true
+    },
+    brush: {
+        xAxisIndex: 'all',
+        brushLink: 'all',
+        outOfBrush: {
+            colorAlpha: 0.1
+        }
     },
     title: {
         text: '产品数量单价图'
@@ -76,12 +83,56 @@ var mainFirstoption = {
 };
 
 function variableOption() {
-    //title的值
-    // console.log($("#title").val())
-    //
-    var option =
+    var data = toJson();
+    console.log(data)
+    //初始option，包含一些默认设置
+    var option ={
+        color:['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
+        textStyle: {
+            color:'#000000',
+            fontStyle:'normal',
+            fontWeight:'normal',
+            fontFamily:'sans-serif',
+            fontSize:12
+        }
+    }
 
-        /*{
+    //title的设置
+    if(data.title!=''){
+        option=$.extend(option,{
+            title: {
+                text:data.title,
+                textStyle: {
+                    color: data.titleColor,
+                    fontStyle: $("#titleItalic").val(),
+                    fontWeight: $("#titleBold").val(),
+                    fontSize: parseInt(data.titleFontSize.replace(/[^0-9]/ig,"")),
+                }
+            }
+        })
+    }
+
+    //x轴的设置
+
+    //y轴的设置
+
+    //series的设置
+
+    option=$.extend({}, mainFirstoption, option)
+    // console.log(option);
+    myChart.setOption(option);
+}
+
+function toJson() {
+    var data = $("#customForm").serializeArray();
+    var obj = {};
+    $.each(data,function(i,v){
+        obj[v.name] = v.value;
+    })
+    return obj;
+}
+
+/*{
         color:['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
         textStyle: {
           color:'#000000',
@@ -198,8 +249,3 @@ function variableOption() {
             }
         }]
     }*/
-    option=$.extend({}, mainFirstoption, option)
-    // console.log(option);
-    myChart.setOption(option);
-}
-
