@@ -54,9 +54,14 @@ var mainFirstoption = {
         type: 'category',
         axisLabel: {
             rotate: 45
+        },
+        axisLine: {
+            onZero: false
         }
     },
-    yAxis: {},
+    yAxis: {
+        type:'value',
+    },
     series: [{
         name:'数量',
         type: 'bar',
@@ -84,7 +89,7 @@ var mainFirstoption = {
 
 function variableOption() {
     var data = toJson();
-    console.log(data)
+    // console.log(data)
     //初始option，包含一些默认设置
     var option ={
         color:['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
@@ -106,16 +111,50 @@ function variableOption() {
                     color: data.titleColor,
                     fontStyle: $("#titleItalic").val(),
                     fontWeight: $("#titleBold").val(),
-                    fontSize: parseInt(data.titleFontSize.replace(/[^0-9]/ig,"")),
+                    fontSize: parseInt(data.titleFontSize.replace(/[^0-9]/ig,""))
                 }
             }
         })
     }
-
     //x轴的设置
-
+    option=$.extend(option,{
+        xAxis: {
+            show:data.showXAxis=='on'?true:false,
+            name:data.xAxisName,
+            nameLocation:'end',
+            type:'category',
+            position:data.xPosition,
+            nameTextStyle:{
+                color:data.xAxisColor,
+                fontStyle: $("#xAxisItalic").val(),
+                fontWeight: $("#xAxisBold").val(),
+                fontSize: data.xAxisName==''?12:parseInt(data.xAxisFontSize.replace(/[^0-9]/ig,""))
+            },
+            axisTick:{
+                show:true,
+                // alignWithLabel:true,
+                // interval:'auto',
+                // inside:false,
+            },
+            axisLabel: {
+                show:true,
+                interval:'auto',
+                inside:false,
+                rotate: data.xRotation,
+                fontStyle:'normal',
+                fontSize:12,
+            },
+            axisPointer:{
+                show:data.showXP=='on'?true:false
+            }
+        }
+    })
     //y轴的设置
-
+    option=$.extend(option,{
+        yAxis: {
+            inverse: data.xPosition=='top'?true:false
+        }
+    })
     //series的设置
 
     option=$.extend({}, mainFirstoption, option)

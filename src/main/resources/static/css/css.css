@@ -16,3 +16,15 @@
         margin-left: 15px
     }
 }
+.caret {
+    display: inline-block;
+    width: 0rem;
+    height: 0rem;
+    margin-left: 0.250rem;
+    vertical-align: middle;
+    border-top: 0.50rem dashed;
+    border-top: 0.50rem solid;
+    border-right: 0.50rem solid transparent;
+    border-left: 0.50rem solid transparent;
+    margin-right: 10px;
+}

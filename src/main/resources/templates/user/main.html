@@ -60,8 +60,6 @@
 
         <a class="btn btn-primary" data-toggle="collapse" href="#optionSetting" role="button" aria-expanded="false"
            aria-controls="multiCollapseExample1">自定义图形</a>
-        <!--            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Toggle second element</button>-->
-        <!--            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Toggle both elements</button>-->
         <div class="row">
             <div class="col">
                 <div class="collapse multi-collapse" id="optionSetting">
@@ -74,11 +72,13 @@
                                         <input type="text" class="form-control col-7 textInput" id="title" name="title"
                                                placeholder="输入标题内容">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="button" id="titleItalic"
+                                            <button class="btn btn-outline-secondary italic" type="button"
+                                                    id="titleItalic"
                                                     name="titleItalic"><i>Ⅰ</i></button>
-                                            <button class="btn btn-outline-secondary" type="button" id="titleBold"
+                                            <button class="btn btn-outline-secondary bold" type="button" id="titleBold"
                                                     name="titleBold"><strong>B</strong></button>
-                                            <select class="form-control col-6 fontOption" id="titleFontSize" name="titleFontSize">16px</select>
+                                            <select class="form-control col-6 fontOption" id="titleFontSize"
+                                                    name="titleFontSize">16px</select>
                                             <input type="color" class="form-control col-5" id="titleColor"
                                                    name="titleColor">
                                         </div>
@@ -86,35 +86,54 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="xAxis" data-toggle="collapse" href="#xAxis" role="button" aria-expanded="false"
-                                       aria-controls="multiCollapseExample1">&or;横轴设置</label>
+                                <label for="xAxis" data-toggle="collapse" href="#xAxis" role="button"
+                                       aria-expanded="false"
+                                       aria-controls="multiCollapseExample1"><span class="caret"></span>横轴设置</label>
                                 <div id="xAxis" class="collapse multi-collapse">
+                                    <div class="form-group form-check">
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input form-check-inline"
+                                                   id="showXAxis" name="showXAxis" checked>
+                                            <label class="form-check-label" for="showXAxis">显示横轴</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input form-check-inline"
+                                                   id="showXP" name="showXP">
+                                            <label class="form-check-label" for="showXP">显示横轴指示器</label>
+                                        </div>
+                                    </div>
                                     <div class="input-group">
-                                        <input type="text" class="form-control col-7 textInput" id="xAxisName" name="xAxisName"
+                                        <input type="text" class="form-control col-7 textInput" id="xAxisName"
+                                               name="xAxisName"
                                                placeholder="输入x轴名字，将显示在右侧">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="button" id="xAxisItalic"
+                                            <button class="btn btn-outline-secondary italic" type="button"
+                                                    id="xAxisItalic"
                                                     name="xAxisItalic"><i>Ⅰ</i></button>
-                                            <button class="btn btn-outline-secondary" type="button" id="xAxisBold"
+                                            <button class="btn btn-outline-secondary bold" type="button" id="xAxisBold"
                                                     name="xAxisBold"><strong>B</strong></button>
-                                            <select class="form-control col-6 fontOption" id="xAxisFontSize" name="xAxisFontSize">16px</select>
+                                            <select class="form-control col-6 fontOption" id="xAxisFontSize"
+                                                    name="xAxisFontSize">16px</select>
                                             <input type="color" class="form-control col-5" id="xAxisColor"
                                                    name="xAxisColor">
                                         </div>
                                     </div>
-                                    <input type="checkbox" class="checkbox" name="showXAxis" checked>显示
+
                                     <div class="form-group">
                                         <label for="xPosition">横轴位置（上下）</label>
                                         <select class="form-control" id="xPosition" name="xPosition">
-                                            <option>top</option>
                                             <option>bottom</option>
+                                            <option>top</option>
                                         </select>
                                     </div>
-                                    <div class="input-group">
-
+                                    <div class="form-group">
+                                        <label for="xRotation">标签角度</label>
+                                        <input type="number" class="form-control" id="xRotation" name="xRotation" placeholder="输入任意数字" value="45">
                                     </div>
                                 </div>
+
                             </div>
+                            <hr>
                             <div class="form-group">
                                 <label for="inputAddress2">Address 2</label>
                                 <input type="text" class="form-control" id="inputAddress2"
@@ -169,7 +188,9 @@
         fontSizeList();
         active();
     })
-    // 指定图表的配置项和数据
+    $(document).on('change','input,select',function () {
+variableOption()
+    })
 
     $("#deleteToken").click(function () {
         $.removeCookie('login_token', {path: '/'});
@@ -183,7 +204,6 @@
             data: $("#queryForm").serialize(),
             success: function (m) {
                 mainFirstoption.dataset.source = m.data;
-                // option.title.text='测试用';
                 // console.log(mainFirstoption)
                 myChart.setOption(mainFirstoption);
             },
@@ -197,47 +217,46 @@
         myChart.resize();
     })
 
-    /*$("#color").blur(function () {
-        console.log($(this).val())
-    })*/
     function fontSizeList() {
         var fontSize = ['12px', '14px', '16px', '18px', '20px', '24px', '36px'];
         for (var i = 0; i < fontSize.length; i++) {
             // ES6字符串模板
             var Html = `<option>${fontSize[i]}</option>`
             $(".fontOption").append(Html);
-            $(".fontOption option").eq(i).css('font-size', fontSize[i]);
-            // alert($("#titleFontSize option").eq(i).css('font-size'))
         }
+        $(".fontOption").children('option').css('font-size', function () {
+            return $(this).val();
+        });
         $(".fontOption").val('16px');
-        // ES6箭头函数
-        $('body').on("change", ".fontOption", () => {
-            var fontCss = $(".fontOption").find('option:selected').css('font-size');
-            $(".textInput").css('font-size', fontCss);
-            $(".textInput").next('div').children().css('font-size', fontCss);
+        $(".fontOption").change(function () {
+            var fontCss = $(this).find('option:selected').css('font-size');
+            var text = $(this).parent('div').prev('input');
+            text.css('font-size', fontCss);
+            text.next('div').children().css('font-size', fontCss);
         })
     }
 
     function active() {
-        var title = $("#title");
-        $("#titleItalic").click(function () {
+        $(".italic").click(function () {
             $(this).toggleClass('active');
-            if (title.css('fontStyle') == 'italic') {
-                title.css('fontStyle', '');
+            var text = $(this).parent('div').prev('input');
+            if (text.css('fontStyle') == 'italic') {
+                text.css('fontStyle', '');
                 $(this).val('normal');
             } else {
-                title.css('fontStyle', 'italic')
+                text.css('fontStyle', 'italic')
                 $(this).val('italic');
             }
         })
-        $("#titleBold").click(function () {
+        $(".bold").click(function () {
             $(this).toggleClass('active');
-            // alert(title.css('fontWeight'))
-            if (title.css('fontWeight') == '700') {
-                title.css('fontWeight', 'Normal');
+            // alert(text.css('fontWeight'))
+            var text = $(this).parent('div').prev('input');
+            if (text.css('fontWeight') == '700') {
+                text.css('fontWeight', 'Normal');
                 $(this).val('normal');
             } else {
-                title.css('fontWeight', 'Bold');
+                text.css('fontWeight', 'Bold');
                 $(this).val('bold');
             }
         })
