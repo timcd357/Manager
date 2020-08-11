@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/css.css}">
+    <style type="text/css">
+        body{
+            margin-top: 100px;
+        }
+    </style>
+    <title>excel导入导出</title>
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{user/sidebar :: headerBar}"></div>
+    <form id="upExcelForm" enctype="multipart/form-data">
+        <input type="file" class="form-control-file" id="upExcel" name="excel">
+        <input type="date" class="form-control" id="date" placeholder="存储该记录时间" name="date">
+        <input type="hidden" name="userid" id="userid">
+        <button type="button" class="btn btn-info" onclick="uploadExcel()">上传</button>
+    </form>
+
+</div>
+
+<div th:replace="~{templates/commonJs :: commonJs}"></div>
+
+<script>
+    $(function () {
+        defaultDateInput();
+    })
+    function uploadExcel() {
+        var form = new FormData();
+        form.append("excel", document.getElementById("upExcel").files[0]);
+        form.append("date",document.getElementById("date").value);
+        form.append("userid",document.getElementById("userid").value)
+        // console.log(form)
+        $.ajax({
+            url: '/storage/upExcel',
+            data: form,
+            type: 'post',
+            processData: false,
+            contentType: false,
+            success: function (m) {
+                alert(m.msg);
+            }
+        })
+    }
+</script>
+</body>
+</html>

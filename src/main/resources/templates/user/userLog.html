@@ -108,11 +108,7 @@
 
 <script>
     $(function () {
-        var time = new Date();
-        var day = ("0" + time.getDate()).slice(-2);
-        var month = ("0" + (time.getMonth() + 1)).slice(-2);
-        var today = time.getFullYear() + "-" + (month) + "-" + (day);
-        $('#date').val(today);
+        defaultDateInput();
         bootstrapTable();
         $("#logTable").on('check.bs.table', function ($element,row) {
             // console.log($element)

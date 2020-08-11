@@ -6,31 +6,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MainPageController {
     @RequestMapping("/")
-    public String root(){
+    public String root() {
         return "redirect:/index";
     }
+
     @RequestMapping("/index")
-    public String toIndex(){
+    public String toIndex() {
         return "index";
     }
+
     @RequestMapping("/main")
-    public String userMain(){
+    public String userMain() {
         return "/user/main";
     }
+
     @RequestMapping("/login")
-    public String userLogin(){
+    public String userLogin() {
         return "/user/login";
     }
+
     @RequestMapping("/regist")
-    public String userRegist(){
+    public String userRegist() {
         return "/user/regist";
     }
+
     @RequestMapping("/userLog")
-    public String userLog(){
+    public String userLog() {
         return "/user/userLog";
     }
+
     @RequestMapping("/location")
-    public String location(){
+    public String location() {
         return "/console/location";
+    }
+
+    @RequestMapping("/excel")
+    public String excel() {
+        return "/user/excel";
     }
 }
