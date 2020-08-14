@@ -39,3 +39,21 @@ CREATE TABLE `query_location` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于记录对应的位置信息'
 
+CREATE TABLE `storage` (
+  `id` varchar(36) NOT NULL,
+  `name` varchar(500) NOT NULL COMMENT '品名规格',
+  `factory` varchar(200) DEFAULT NULL COMMENT '厂家名称',
+  `qty` int DEFAULT NULL COMMENT '包装数量',
+  `lot` varchar(45) NOT NULL COMMENT '批号',
+  `num` int NOT NULL COMMENT '可分配数量',
+  `packages` int NOT NULL DEFAULT '0' COMMENT '可分配件数',
+  `odd` int NOT NULL DEFAULT '0' COMMENT '零头',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `modify_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `real_time` datetime NOT NULL,
+  `user_id` varchar(36) NOT NULL,
+  `batch` varchar(200) DEFAULT NULL COMMENT '批次号',
+  `flag` int DEFAULT '0' COMMENT '标志位',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='仓库状态'
+

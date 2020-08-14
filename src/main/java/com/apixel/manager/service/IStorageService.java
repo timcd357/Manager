@@ -5,6 +5,8 @@ import com.apixel.manager.utils.Message;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+
 /**
  * <p>
  * 仓库状态 服务类
@@ -15,4 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface IStorageService extends IService<Storage> {
     Message insertExcel(MultipartFile excel,String date,String userid);
+    Message findLastRecord();
+    void changeBatch();
+    Message findRetrieval(String date);
 }

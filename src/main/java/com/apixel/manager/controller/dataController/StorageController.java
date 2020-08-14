@@ -4,6 +4,7 @@ package com.apixel.manager.controller.dataController;
 import com.apixel.manager.service.IStorageService;
 import com.apixel.manager.utils.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.xml.crypto.Data;
 import java.io.File;
+import java.util.Date;
 
 /**
  * <p>
@@ -33,5 +35,19 @@ public class StorageController {
         return storageService.insertExcel(excel,date,userid);
     }
 
+    @GetMapping("/findLastRecord")
+    public Message findLastRecord(){
+        return storageService.findLastRecord();
+    }
+
+    @RequestMapping("/changeBatch")
+    public void changeBatch(){
+        storageService.changeBatch();
+    }
+
+    @RequestMapping("/findRetrieval")
+    public Message findRetrieval(String date){
+        return storageService.findRetrieval(date);
+    }
 }
 

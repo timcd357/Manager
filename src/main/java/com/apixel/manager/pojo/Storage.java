@@ -42,32 +42,30 @@ public class Storage implements Serializable {
     /**
      * 包装数量
      */
-    @ExcelAnnotation(columnIndex = 7,columnName = "包装数量")
+    @ExcelAnnotation(columnIndex = 8,columnName = "包装数量")
+//    @ExcelAnnotation(columnIndex = 7,columnName = "包装数量")
     private Integer qty;
 
     /**
      * 批号
      */
-    @ExcelAnnotation(columnIndex = 9,columnName = "批号")
+    @ExcelAnnotation(columnIndex = 11,columnName = "批号")
+//    @ExcelAnnotation(columnIndex = 9,columnName = "批号")
     private String lot;
 
     /**
      * 可分配数量
      */
-    @ExcelAnnotation(columnIndex = 13,columnName = "可分配数量")
+    @ExcelAnnotation(columnIndex = 15,columnName = "库存数量")
+//    @ExcelAnnotation(columnIndex = 13,columnName = "库存数量")
     private Integer num;
 
     /**
      * 可分配件数
      */
-    @ExcelAnnotation(columnIndex = 14,columnName = "可分配件数")
-    private Integer packages;
-
-    /**
-     * 零头
-     */
-    @ExcelAnnotation(columnIndex = 15,columnName = "零头")
-    private Integer odd;
+    @ExcelAnnotation(columnIndex = 16,columnName = "可分配数量")  //正式用
+//    @ExcelAnnotation(columnIndex = 13,columnName = "可分配数量")
+    private Integer assignable;
 
     /**
      * 创建时间
@@ -83,8 +81,18 @@ public class Storage implements Serializable {
     private Date realTime;
 
     //用于判断是不同的物品
-    @ExcelAnnotation(columnIndex = 29,columnName = "批次号")
+    @ExcelAnnotation(columnIndex = 14,columnName = "批次号")
+//    @ExcelAnnotation(columnIndex = 29,columnName = "批次号")
     private String batch;
+
+    @ExcelAnnotation(columnIndex = 28,columnName = "货位名称")
+//    @ExcelAnnotation(columnIndex = 41,columnName = "货位名称")
+    private String site;
+
+    @ExcelAnnotation(columnIndex = 27,columnName = "货位代码")
+//    @ExcelAnnotation(columnIndex = 42,columnName = "货位代码")
+    private String siteCode;
+
     /**
      * 标志位
      */
@@ -138,22 +146,6 @@ public class Storage implements Serializable {
         this.num = num;
     }
 
-    public Integer getPackages() {
-        return packages;
-    }
-
-    public void setPackages(Integer packages) {
-        this.packages = packages;
-    }
-
-    public Integer getOdd() {
-        return odd;
-    }
-
-    public void setOdd(Integer odd) {
-        this.odd = odd;
-    }
-
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -200,5 +192,29 @@ public class Storage implements Serializable {
 
     public void setBatch(String batch) {
         this.batch = batch;
+    }
+
+    public Integer getAssignable() {
+        return assignable;
+    }
+
+    public void setAssignable(Integer assignable) {
+        this.assignable = assignable;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
+    }
+
+    public String getSiteCode() {
+        return siteCode;
+    }
+
+    public void setSiteCode(String siteCode) {
+        this.siteCode = siteCode;
     }
 }

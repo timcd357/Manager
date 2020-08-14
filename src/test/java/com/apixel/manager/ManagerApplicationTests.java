@@ -21,10 +21,12 @@ public class ManagerApplicationTests {
 
     @Test
     public void contextLoads() {
-        System.out.println(("----- selectAll method test ------"));
+        /*System.out.println(("----- selectAll method test ------"));
         List<User> userList = testMapper.selectList(null);
         Assert.assertEquals(5, userList.size());
-        userList.forEach(System.out::println);
+        userList.forEach(System.out::println);*/
+        String s = "4175627/1220137张俊/441053上海千拓医药科技有限公司/季爱琼/2010200714209/480/20200722 2020-07-22 06:07:16";
+        System.out.println(s.substring(0,s.indexOf("-")-4));
     }
 
 }

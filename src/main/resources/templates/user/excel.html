@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/css.css}">
+    <link rel="stylesheet" th:href="@{/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-table.min.css}">
     <style type="text/css">
         body{
             margin-top: 100px;
@@ -21,14 +22,21 @@
         <input type="hidden" name="userid" id="userid">
         <button type="button" class="btn btn-info" onclick="uploadExcel()">上传</button>
     </form>
-
+    <table id="excelTable"></table>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <div th:replace="~{templates/commonJs :: commonJs}"></div>
-
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/bootstrap-table.min.js}"></script>
+<script th:src="@{/js/bootstrap-table-zh-CN.min.js}"></script>
+<script th:src="@{/js/bootstrap-table-export.min.js}"></script>
+<script th:src="@{/js/tableExport.min.js}"></script>
+<script th:src="@{/js/xlsx.core.min.js}"></script>
+<script th:src="@{/js/FileSaver.min.js}"></script>
 <script>
     $(function () {
         defaultDateInput();
+        bootstrapTable();
     })
     function uploadExcel() {
         var form = new FormData();
@@ -45,6 +53,92 @@
             success: function (m) {
                 alert(m.msg);
             }
+        })
+    }
+
+    function bootstrapTable(){
+        $("#excelTable").bootstrapTable({
+            url:"/storage/findLastRecord?rnd="+Math.random(),
+            method:"get",
+            pagination:true,
+            pageSize: 10,
+            pageList: [5, 10, 15, 20,'all'],
+            sidePagination: "client", //分页方式：client客户端分页，server服务端分页（*）
+            // toolbar:"#toolbar",
+            sortable:true,
+            sortNames:['name','factory','lot','siteCode'],
+            search: true,
+            strictSearch: false,
+            showColumns: true,
+            showRefresh: true,
+            minimumCountColumns: 2,
+            clickToSelect: true,
+            //height: 500,
+            //uniqueId: "id",
+            showToggle:true,
+            cardView: false,
+            detailView: false,
+            queryParams:function(params){
+                var temp = {
+                    rows: params.pageSize,      //页面大小
+                    page: params.pageNumber,   //页码
+                    sort: params.sort,         //排序列名
+                    sortOrder: params.order, //排位命令（desc，asc）
+                };
+                return temp;
+            },
+            responseHandler:function(res){
+                return res.data;
+            },
+            //>>>>>>>>>>>>>>导出excel表格设置
+            showExport: true,              //是否显示导出按钮(此方法是自己写的目的是判断终端是电脑还是手机,电脑则返回true,手机返回falsee,手机不显示按钮)
+            exportDataType: "basic",              //basic', 'all', 'selected'.
+            Icons:'glyphicon-export',
+            exportTypes:['excel'],	    //导出类型
+            //exportButton: $('#btn_export'),     //为按钮btn_export  绑定导出事件  自定义导出按钮(可以不用)
+            exportOptions:{
+                //ignoreColumn: [0,0],            //忽略某一列的索引
+                fileName: '数据导出',              //文件名称设置
+                worksheetName: 'Sheet1',          //表格工作区名称
+                tableName: '商品数据表',
+                excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+                //onMsoNumberFormat: DoOnMsoNumberFormat
+            },
+            //导出excel表格设置<<<<<<<<<<<<<<<<
+            columns: [{
+                checkbox:true,
+                visible:true
+            },{
+                field:'id',
+                visible:false
+            },{
+                field: 'name',
+                title: '品名规格'
+            }, {
+                field: 'factory',
+                title: '生产厂家'
+            }, {
+                field: 'lot',
+                title: '批号'
+            }, {
+                field: 'num',
+                title: '数量'
+            }, {
+                field: 'assignable',
+                title: '可分配数量'
+            }, {
+                field: 'site',
+                title: '货位名称'
+            }, {
+                field: 'siteCode',
+                title: '货位代码'
+            }, {
+                field: 'realTime',
+                title: '时间',
+                formatter: function (value, row, index) {
+                    return value.substr(0,10);
+                }
+            }]
         })
     }
 </script>
