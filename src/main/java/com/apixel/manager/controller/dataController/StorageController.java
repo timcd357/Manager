@@ -31,7 +31,7 @@ public class StorageController {
     IStorageService storageService;
 
     @PostMapping("/upExcel")
-    public Message getExcel(MultipartFile excel, String date,String userid){
+    public Message insertExcel(MultipartFile excel, String date,String userid){
         return storageService.insertExcel(excel,date,userid);
     }
 
@@ -46,8 +46,8 @@ public class StorageController {
     }
 
     @RequestMapping("/findRetrieval")
-    public Message findRetrieval(String date){
-        return storageService.findRetrieval(date);
+    public Message findRetrieval(){
+        return storageService.findRetrieval();
     }
 }
 

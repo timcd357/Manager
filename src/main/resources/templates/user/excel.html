@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/all.min.css}">
     <link rel="stylesheet" th:href="@{/css/bootstrap-table.min.css}">
     <style type="text/css">
-        body{
+        body {
             margin-top: 100px;
         }
     </style>
@@ -17,14 +17,17 @@
 <div class="container">
     <div th:replace="~{user/sidebar :: headerBar}"></div>
     <form id="upExcelForm" enctype="multipart/form-data">
-        <input type="file" class="form-control-file" id="upExcel" name="excel">
+        <input type="file" class="form-control-file" id="upExcel" name="excel" accept=".xlsx,.XLSX">
         <input type="date" class="form-control" id="date" placeholder="存储该记录时间" name="date">
         <input type="hidden" name="userid" id="userid">
         <button type="button" class="btn btn-info" onclick="uploadExcel()">上传</button>
     </form>
+    <button type="button" class="btn btn-warning" id="search">查询出入库情况</button>
     <table id="excelTable"></table>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
 <div th:replace="~{templates/commonJs :: commonJs}"></div>
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <script th:src="@{/js/bootstrap-table.min.js}"></script>
@@ -36,13 +39,100 @@
 <script>
     $(function () {
         defaultDateInput();
-        bootstrapTable();
+        bootstrapTable("/storage/findLastRecord?rnd=" + Math.random(),colDefault);
+        $("#search").click(function () {
+            // $("#excelTable").bootstrapTable('refresh',{url:'/storage/findRetrieval',columns:colR})
+            bootstrapTable("/storage/findRetrieval",colR);
+        });
     })
+    var colR=[
+        [{
+            "title": '出库情况（不包含最近一天的出库）',
+            "halign": "center",
+            "align": "center",
+            "colspan": 10
+        }],
+        [{
+            checkbox: true,
+            visible: true
+        }, {
+            field: 'id',
+            visible: false
+        }, {
+            field: 'name',
+            title: '品名规格'
+        }, {
+            field: 'factory',
+            title: '生产厂家'
+        }, {
+            field: 'lot',
+            title: '批号'
+        }, {
+            field: 'num',
+            title: '数量'
+        }, {
+            field: 'site',
+            title: '货位名称'
+        }, {
+            field: 'siteCode',
+            title: '货位代码'
+        }, {
+            field: 'realTime',
+            title: '时间',
+            formatter: function (value, row, index) {
+                return value.substr(0, 10);
+            }
+        }]
+    ]
+
+    var colDefault=[
+        [{
+            "title": "当前库存情况表",
+            "halign": "center",
+            "align": "center",
+            "colspan": 10
+        }],
+        [{
+            checkbox: true,
+            visible: true
+        }, {
+            field: 'id',
+            visible: false
+        }, {
+            field: 'name',
+            title: '品名规格'
+        }, {
+            field: 'factory',
+            title: '生产厂家'
+        }, {
+            field: 'lot',
+            title: '批号'
+        }, {
+            field: 'num',
+            title: '数量'
+        }, {
+            field: 'assignable',
+            title: '可分配数量'
+        }, {
+            field: 'site',
+            title: '货位名称'
+        }, {
+            field: 'siteCode',
+            title: '货位代码'
+        }, {
+            field: 'realTime',
+            title: '时间',
+            formatter: function (value, row, index) {
+                return value.substr(0, 10);
+            }
+        }]
+    ];
+
     function uploadExcel() {
         var form = new FormData();
         form.append("excel", document.getElementById("upExcel").files[0]);
-        form.append("date",document.getElementById("date").value);
-        form.append("userid",document.getElementById("userid").value)
+        form.append("date", document.getElementById("date").value);
+        form.append("userid", document.getElementById("userid").value)
         // console.log(form)
         $.ajax({
             url: '/storage/upExcel',
@@ -56,17 +146,17 @@
         })
     }
 
-    function bootstrapTable(){
+    function bootstrapTable(uri,cols) {
         $("#excelTable").bootstrapTable({
-            url:"/storage/findLastRecord?rnd="+Math.random(),
-            method:"get",
-            pagination:true,
+            url: uri,
+            method: "get",
+            pagination: true,
             pageSize: 10,
-            pageList: [5, 10, 15, 20,'all'],
+            pageList: [5, 10, 15, 20, 'all'],
             sidePagination: "client", //分页方式：client客户端分页，server服务端分页（*）
             // toolbar:"#toolbar",
-            sortable:true,
-            sortNames:['name','factory','lot','siteCode'],
+            sortable: true,
+            sortNames: ['name', 'factory', 'lot', 'siteCode'],
             search: true,
             strictSearch: false,
             showColumns: true,
@@ -75,10 +165,10 @@
             clickToSelect: true,
             //height: 500,
             //uniqueId: "id",
-            showToggle:true,
+            showToggle: true,
             cardView: false,
             detailView: false,
-            queryParams:function(params){
+            queryParams: function (params) {
                 var temp = {
                     rows: params.pageSize,      //页面大小
                     page: params.pageNumber,   //页码
@@ -87,16 +177,16 @@
                 };
                 return temp;
             },
-            responseHandler:function(res){
+            responseHandler: function (res) {
                 return res.data;
             },
             //>>>>>>>>>>>>>>导出excel表格设置
             showExport: true,              //是否显示导出按钮(此方法是自己写的目的是判断终端是电脑还是手机,电脑则返回true,手机返回falsee,手机不显示按钮)
             exportDataType: "basic",              //basic', 'all', 'selected'.
-            Icons:'glyphicon-export',
-            exportTypes:['excel'],	    //导出类型
+            Icons: 'glyphicon-export',
+            exportTypes: ['excel'],	    //导出类型
             //exportButton: $('#btn_export'),     //为按钮btn_export  绑定导出事件  自定义导出按钮(可以不用)
-            exportOptions:{
+            exportOptions: {
                 //ignoreColumn: [0,0],            //忽略某一列的索引
                 fileName: '数据导出',              //文件名称设置
                 worksheetName: 'Sheet1',          //表格工作区名称
@@ -105,40 +195,7 @@
                 //onMsoNumberFormat: DoOnMsoNumberFormat
             },
             //导出excel表格设置<<<<<<<<<<<<<<<<
-            columns: [{
-                checkbox:true,
-                visible:true
-            },{
-                field:'id',
-                visible:false
-            },{
-                field: 'name',
-                title: '品名规格'
-            }, {
-                field: 'factory',
-                title: '生产厂家'
-            }, {
-                field: 'lot',
-                title: '批号'
-            }, {
-                field: 'num',
-                title: '数量'
-            }, {
-                field: 'assignable',
-                title: '可分配数量'
-            }, {
-                field: 'site',
-                title: '货位名称'
-            }, {
-                field: 'siteCode',
-                title: '货位代码'
-            }, {
-                field: 'realTime',
-                title: '时间',
-                formatter: function (value, row, index) {
-                    return value.substr(0,10);
-                }
-            }]
+            columns:cols
         })
     }
 </script>

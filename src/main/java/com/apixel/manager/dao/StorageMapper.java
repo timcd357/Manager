@@ -16,5 +16,7 @@ import java.util.List;
  */
 public interface StorageMapper extends BaseMapper<Storage> {
     List<Storage> findLastRecord();
-    List<Storage> findRetrieval(String date);
+    List<Storage> findRetrieval();
+    List<Storage> retrieval();
+    Storage getPreTime(String date);
 }

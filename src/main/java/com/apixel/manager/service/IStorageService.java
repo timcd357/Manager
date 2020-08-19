@@ -19,5 +19,5 @@ public interface IStorageService extends IService<Storage> {
     Message insertExcel(MultipartFile excel,String date,String userid);
     Message findLastRecord();
     void changeBatch();
-    Message findRetrieval(String date);
+    Message findRetrieval();
 }

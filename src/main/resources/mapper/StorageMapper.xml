@@ -29,12 +29,29 @@
          from storage
          where real_time = (select real_time from storage order by real_time desc limit 0,1)
     </select>
-    <select id="findRetrieval" resultMap="BaseResultMap" parameterType="String">
+    <select id="findRetrieval" resultMap="BaseResultMap">
         select
-        t1.name,t1.num-t2.num num,t1.lot,t2.real_time
+        <include refid="Base_Column_List" />
+         from storage
+         where real_time &lt; (select real_time from storage order by real_time desc limit 1) order by real_time desc
+    </select>
+    <select id="retrieval" resultMap="BaseResultMap">
+        select
+        t1.id id,t1.name name,t1.num-t2.num num
         from
-        (select <include refid="Base_Column_List" /> from storage where real_time=date_sub(#{date},interval 1 day)) t1
+        (select <include refid="Base_Column_List" /> from storage where real_time=(select DISTINCT real_time from storage order by real_time desc limit 1,1)) t1
         left join
-        (select <include refid="Base_Column_List" /> from storage where real_time=#{date}) t2 on t1.batch=t2.batch
+        (select <include refid="Base_Column_List" /> from storage where real_time=(select DISTINCT real_time from storage order by real_time desc limit 0,1)) t2
+        on
+         t1.batch=t2.batch;
+    </select>
+    <select id="getPreTime" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        real_time
+        from
+        storage
+        where real_time &lt; #{date}
+        order by real_time desc
+        limit 1
     </select>
 </mapper>
